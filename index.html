@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Takudzwa Percy Tawodzera | Game & Software Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00ff88;
+            --secondary: #ff0066;
+            --accent: #00ccff;
+            --dark: #0a0e1a;
+            --darker: #050810;
+            --text: #e0e6ff;
+            --text-dim: #8b95c9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--darker);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridScroll 20s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes gridScroll {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50px); }
+        }
+
+        /* Pixel art cursor effect */
+        .cursor-glow {
+            position: fixed;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            padding: 2rem 0;
+            position: relative;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+            letter-spacing: 2px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            padding: 4rem 0;
+        }
+
+        .hero-content h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glitchText 3s infinite;
+        }
+
+        @keyframes glitchText {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+
+        .hero-content h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .hero-tags {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .tag {
+            padding: 0.5rem 1.5rem;
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease backwards;
+        }
+
+        .tag:nth-child(1) { animation-delay: 0.1s; }
+        .tag:nth-child(2) { animation-delay: 0.2s; }
+        .tag:nth-child(3) { animation-delay: 0.3s; }
+
+        .tag:hover {
+            background: var(--primary);
+            color: var(--dark);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Section Styles */
+        section {
+            padding: 5rem 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 3rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+        }
+
+        /* About Section */
+        .about-content {
+            background: rgba(10, 14, 26, 0.6);
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            border-radius: 8px;
+            padding: 3rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-content strong {
+            color: var(--primary);
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .skill-category {
+            background: rgba(10, 14, 26, 0.6);
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .skill-category:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .skill-category h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .skill-list {
+            list-style: none;
+        }
+
+        .skill-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .skill-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        /* Certifications Section */
+        .certifications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .cert-card {
+            background: rgba(10, 14, 26, 0.6);
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .cert-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .cert-badge {
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+            margin: 0 auto 1.5rem;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .cert-card:hover .cert-badge {
+            transform: scale(1.05);
+        }
+
+        .cert-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.4rem;
+        }
+
+        .cert-issuer {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .cert-date {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .cert-description {
+            color: var(--text);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .cert-badge-label {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .cert-link {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.6rem 1.5rem;
+            background: rgba(0, 204, 255, 0.1);
+            border: 2px solid var(--accent);
+            border-radius: 4px;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .cert-link:hover {
+            background: var(--accent);
+            color: var(--dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 204, 255, 0.3);
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: rgba(10, 14, 26, 0.6);
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .project-card:hover::before {
+            left: 100%;
+        }
+
+        .project-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .project-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .project-type {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            background: rgba(255, 0, 102, 0.2);
+            border: 1px solid var(--secondary);
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .project-card p {
+            color: var(--text-dim);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .project-tech {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tech-badge {
+            padding: 0.3rem 0.8rem;
+            background: rgba(0, 204, 255, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: var(--accent);
+        }
+
+        /* Project platform links */
+        .project-link {
+            padding: 0.5rem 1rem;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .project-link:hover {
+            background: var(--primary);
+            color: var(--dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.3);
+        }
+
+        .project-platform {
+            padding: 0.5rem 1rem;
+            background: rgba(0, 204, 255, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            color: var(--accent);
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+
+        /* Project images */
+        .project-image {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover .project-image {
+            border-color: var(--primary);
+            box-shadow: 0 8px 24px rgba(0, 255, 136, 0.3);
+            transform: translateY(-3px);
+        }
+
+        /* Contact Section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-card {
+            background: rgba(10, 14, 26, 0.6);
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text);
+            display: block;
+        }
+
+        .contact-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .contact-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .contact-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .contact-card p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 2px solid rgba(0, 255, 136, 0.2);
+            margin-top: 5rem;
+        }
+
+        footer p {
+            color: var(--text-dim);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-tags {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .about-content {
+                padding: 2rem;
+            }
+
+            .projects-grid,
+            .skills-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Add to projects section */
+        .add-project-btn {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            color: var(--primary);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .add-project-btn:hover {
+            background: var(--primary);
+            color: var(--dark);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <header>
+        <div class="container">
+            <div class="logo">TPT.DEV</div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>TAKUDZWA PERCY TAWODZERA</h1>
+                    <h2>Game Developer • Software Engineer • Digital Creator</h2>
+                    <div class="hero-tags">
+                        <span class="tag">2D Game Development</span>
+                        <span class="tag">Web Development</span>
+                        <span class="tag">Software Engineering</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="container">
+                <h2 class="section-title">About Me</h2>
+                <div class="about-content">
+                    <p>
+                        I'm <strong>Takudzwa Percy Tawodzera</strong>, a passionate game and software developer crafting 
+                        interactive experiences and practical solutions through code. Currently in my final year at 
+                        <strong>Africa University</strong>, I blend creative game development with professional software engineering.
+                    </p>
+                    <p>
+                        As a <strong>Google Play Developer</strong>, I specialize in creating engaging 2D games using 
+                        retro-inspired platforms like <strong>Pico 8</strong>, <strong>Pyxel Python</strong>, and 
+                        <strong>Game Maker</strong>. My work spans from pixel-perfect game design to full-stack web development 
+                        and desktop applications.
+                    </p>
+                    <p>
+                        Currently serving as a <strong>Remote Software Engineering Intern at LEARNUTEC Technology Academy</strong>, 
+                        I'm gaining hands-on experience in real-world software development while continuing to expand my 
+                        portfolio of creative and technical projects.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <div class="container">
+                <h2 class="section-title">Skills & Technologies</h2>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h3>Game Development</h3>
+                        <ul class="skill-list">
+                            <li>Pico 8 Development</li>
+                            <li>Pyxel Python</li>
+                            <li>Game Maker Studio</li>
+                            <li>2D Game Design</li>
+                            <li>Pixel Art</li>
+                            <li>Game Mechanics</li>
+                        </ul>
+                    </div>
+
+                    <div class="skill-category">
+                        <h3>Software Development</h3>
+                        <ul class="skill-list">
+                            <li>Python Programming</li>
+                            <li>Web Development</li>
+                            <li>JavaScript / HTML / CSS</li>
+                            <li>Desktop Applications</li>
+                            <li>Version Control (Git)</li>
+                            <li>Problem Solving</li>
+                        </ul>
+                    </div>
+
+                    <div class="skill-category">
+                        <h3>Platform & Tools</h3>
+                        <ul class="skill-list">
+                            <li>Google Play Console</li>
+                            <li>GitHub</li>
+                            <li>Code Editors & IDEs</li>
+                            <li>Game Design Tools</li>
+                            <li>Testing & Debugging</li>
+                            <li>Agile Development</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="certifications">
+            <div class="container">
+                <h2 class="section-title">Certifications</h2>
+                <div class="certifications-grid">
+                    <div class="cert-card">
+                        <img src="python-essentials-1.png" alt="Cisco Python Essentials 1 Certificate" class="cert-badge">
+                        <h3>Python Essentials 1</h3>
+                        <p class="cert-issuer">Cisco Networking Academy</p>
+                        <p class="cert-date">Issued: November 2024</p>
+                        <p class="cert-description">Verified certification in Python programming fundamentals, covering basics of computer programming, syntax, semantics, data types, and fundamental programming techniques.</p>
+                        <div style="margin-top: 1rem;">
+                            <span class="cert-badge-label">🏆 Verified Certificate</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="container">
+                <h2 class="section-title">Featured Projects</h2>
+                <div class="projects-grid">
+                    <!-- BOTS - Featured Game -->
+                    <div class="project-card">
+                        <img src="Bots_commission_NB.png" alt="BOTS Game Cover" class="project-image">
+                        <span class="project-type">GAME</span>
+                        <h3>BOTS</h3>
+                        <p>An action-packed, pixelated 2D mech-based game forged in Game Maker Studio 2. Immerse yourself in tactical challenges as you pilot powerful mechs to thwart the colossal Invaders, monstrous beings that have unleashed chaos and devastation upon our planet. Engage in epic battles, harness unique abilities, and strategize your way to victory to reclaim Earth's peace and tranquility.</p>
+                        <div class="project-tech">
+                            <span class="tech-badge">Game Maker Studio 2</span>
+                            <span class="tech-badge">2D Graphics</span>
+                            <span class="tech-badge">Pixel Art</span>
+                        </div>
+                        <div style="margin-top: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <a href="https://play.google.com/apps/testing/com.tkmakesgames.game" target="_blank" class="project-link">
+                                📱 Google Play Beta
+                            </a>
+                            <a href="https://gx.games/games/3l7f4g/bots/" target="_blank" class="project-link">
+                                🎮 GX.games
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <span class="project-type">WEB APP</span>
+                        <h3>Project Title</h3>
+                        <p>Brief description of your web application or software project. Highlight the problem it solves and your approach.</p>
+                        <div class="project-tech">
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">HTML/CSS</span>
+                            <span class="tech-badge">JavaScript</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <span class="project-type">GAME</span>
+                        <h3>Project Title</h3>
+                        <p>Brief description of another game project. Share what you learned and any interesting challenges you overcame.</p>
+                        <div class="project-tech">
+                            <span class="tech-badge">Pyxel</span>
+                            <span class="tech-badge">Python</span>
+                        </div>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 3rem; color: var(--text-dim);">
+                    <em>More projects coming soon! Check back regularly for updates.</em>
+                </p>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="container">
+                <h2 class="section-title">Let's Connect</h2>
+                <div class="contact-grid">
+                    <a href="/cdn-cgi/l/email-protection#ee9a85c09a8f99818a948b9c8fae89838f8782c08d8183" class="contact-card">
+                        <div class="contact-icon">📧</div>
+                        <h3>Email</h3>
+                        <p><span class="__cf_email__" data-cfemail="14607f3a6075637b706e716675547379757d783a777b79">[email&#160;protected]</span></p>
+                    </a>
+
+                    <a href="https://github.com/TKTheProgrammer" target="_blank" class="contact-card">
+                        <div class="contact-icon">💻</div>
+                        <h3>GitHub</h3>
+                        <p>@TKTheProgrammer</p>
+                    </a>
+
+                    <a href="https://play.google.com/apps/testing/com.tkmakesgames.game" target="_blank" class="contact-card">
+                        <div class="contact-icon">🎮</div>
+                        <h3>Google Play</h3>
+                        <p>TK Makes Games</p>
+                    </a>
+
+                    <a href="https://www.linkedin.com/in/takudzwa-t-09035726a" target="_blank" class="contact-card">
+                        <div class="contact-icon">🔗</div>
+                        <h3>LinkedIn</h3>
+                        <p>Takudzwa Tawodzera</p>
+                    </a>
+
+                    <a href="https://www.lexaloffle.com/bbs/?uid=72549" target="_blank" class="contact-card">
+                        <div class="contact-icon">🕹️</div>
+                        <h3>Lexaloffle</h3>
+                        <p>Pico-8 Games</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Takudzwa Percy Tawodzera. All rights reserved.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">Built with passion for games and code.</p>
+        </div>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Cursor glow effect
+        const cursorGlow = document.getElementById('cursorGlow');
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.left = (e.clientX - 100) + 'px';
+            cursorGlow.style.top = (e.clientY - 100) + 'px';
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+   
